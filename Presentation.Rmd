@@ -1,0 +1,19 @@
+---
+title: "A plot with Plotly"
+author: "K. van Splunter"
+date: "23 maart 2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+The assignment is to show a plot made with Ploty in a presentation created with R Markdown
+
+## Some Code
+
+To create a plot with Plotly, the package must be loaded
+`library(plotly)`
