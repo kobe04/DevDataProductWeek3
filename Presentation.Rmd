@@ -1,19 +1,54 @@
 ---
 title: "A plot with Plotly"
 author: "K. van Splunter"
-date: "23 maart 2019"
+date: "23 March 2019"
 output: ioslides_presentation
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(plotly)
 ```
 
 ## Introduction
 
 The assignment is to show a plot made with Ploty in a presentation created with R Markdown
 
-## Some Code
+## Some Notes
 
-To create a plot with Plotly, the package must be loaded
+To create a plot with Plotly, the package must be loaded.
+
 `library(plotly)`
+
+## Data
+
+- Uses data from **CBS** (Centraal Bureau voor de Statistiek)
+    - A Dutch government agency that collects and processes all kinds of data
+    - Take a look at the [website](https://www.cbs.nl/en-gb)
+  
+## Info
+
+- Data is about several types of registered crime in the Netherlands for the period 2010-2016
+    - per 1,000 inhabitants
+```{r load_data, comment =""}
+data <- read.csv("criminaliteit.csv", sep = ";", skip=4, dec = ",")
+data <- data[-57,]
+data$Perioden <- as.factor(data$Perioden)
+names(data) <- c("TypeOfCrime", "Year", "Crimeper1000Inhabitants")
+data$TypeOfCrime <- factor(data$TypeOfCrime, labels = c("Property crime", "Destruction",
+                                                        "Violent crime",
+                                                        "Other crimes in criminal law",
+                                                        "Traffic related crime",
+                                                        "Drugs related crime",
+                                                        "Weapon related crime", "Other crime"))
+```
+
+## Plot
+
+```{r plot, fig.align='center'}
+plott <- plot_ly(data, x = ~Year, y = ~Crimeper1000Inhabitants, color = ~TypeOfCrime,
+                 legendgroup = ~TypeOfCrime) %>%
+    add_lines() %>%
+    layout(title = "Amount of crime per 1,000 inhabitants in the Netherlands for the period 2010-2016", yaxis = list(title = "Amount of crime per 1,000 inhabitants"))
+plott
+```
